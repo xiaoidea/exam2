@@ -3,6 +3,7 @@ package com.dhy.study;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 
@@ -15,6 +16,13 @@ public class CommandManager {
         List<String> commandSplit = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults().splitToList(commandString);
 
         String label = commandSplit.get(0);
+        /*String clazzName = label.substring(0,1).toUpperCase() + label.substring(1) + "Command";
+        try {
+            Class clazz = Class.forName(clazzName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }*/
+
         if (label.equals("cat")) {
             return new CatCommand(commandSplit);
         }
@@ -38,11 +46,19 @@ public class CommandManager {
         if (label.equals("grep")) {
             if (source instanceof List)
                 return new GrepCommand(commandSplit, (List<String>)source);
-            //else
-                //throw IllegalStateException("");
+            else if (source instanceof Integer)
+                return new GrepCommand(commandSplit, Lists.newArrayList(String.valueOf(source)));
+            else
+                throw new IllegalStateException("error!");
         }
         else if (label.equals("wc")) {
-            return new WcCommand(commandSplit, source);
+            if (source instanceof List)
+                return new WcCommand(commandSplit, (List<String>)source);
+            else if (source instanceof Integer)
+                return new WcCommand(commandSplit, Lists.newArrayList(String.valueOf(source)));
+            else
+                throw new IllegalStateException("error!");
+            //return new WcCommand(commandSplit, source);
         }
         else {
             throw new IllegalStateException("command is illegal!");

@@ -8,7 +8,7 @@ public class Main {
         String command = "cat sql.txt| grep CREATE | wc -l";
         //command = "wc -l sql.txt";
         //command = "grep CREATE sql.txt";
-        command = "cat sql.txt| wc -l | grep CREATE";
+        command = "cat sql.txt";
         CommandExecutor.executeCommand(command);
     }
 }
