@@ -5,10 +5,10 @@ package com.dhy.study;
  */
 public class Main {
     public static void main(String[] args) {
-        String command = "cat sql.txt| grep CREATE | wc -l";
+        String command = "cat sql.txt| grep CREATE";
         //command = "wc -l sql.txt";
         //command = "grep CREATE sql.txt";
-        command = "cat sql.txt";
+        //command = "cat sql.txt";
         CommandExecutor.executeCommand(command);
     }
 }

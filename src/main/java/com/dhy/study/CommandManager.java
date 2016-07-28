@@ -5,6 +5,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -16,25 +18,25 @@ public class CommandManager {
         List<String> commandSplit = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults().splitToList(commandString);
 
         String label = commandSplit.get(0);
-        /*String clazzName = label.substring(0,1).toUpperCase() + label.substring(1) + "Command";
+
+        String clazzName = "com.dhy.study."+label.substring(0,1).toUpperCase() + label.substring(1) + "Command";
+        //String clazzName = CommandManager.class.getResource("/com/dhy/study/").getPath()+label.substring(0,1).toUpperCase() + label.substring(1) + "Command";
         try {
             Class clazz = Class.forName(clazzName);
+            Constructor constructor = clazz.getConstructor(List.class);
+            return (Command) constructor.newInstance(commandSplit);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }*/
-
-        if (label.equals("cat")) {
-            return new CatCommand(commandSplit);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
-        else if (label.equals("grep")) {
-            return new GrepCommand(commandSplit);
-        }
-        else if (label.equals("wc")) {
-            return new WcCommand(commandSplit);
-        }
-        else {
-            throw new IllegalStateException("command is illegal!");
-        }
+        return null;
     }
 
     public static Command createCommand(String commandString, Object source) {
@@ -43,7 +45,19 @@ public class CommandManager {
         List<String> commandSplit = Splitter.on(CharMatcher.WHITESPACE).omitEmptyStrings().trimResults().splitToList(commandString);
 
         String label = commandSplit.get(0);
-        if (label.equals("grep")) {
+        String clazzName = "com.dhy.study."+label.substring(0,1).toUpperCase() + label.substring(1) + "Command";
+        //String clazzName = label.substring(0,1).toUpperCase() + label.substring(1) + "Command";
+
+        try {
+            Class clazz = Class.forName(clazzName);
+            Constructor constructor = clazz.getConstructor(List.class, List.class);
+            return (Command) constructor.newInstance(commandSplit, source);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+        /*if (label.equals("grep")) {
             if (source instanceof List)
                 return new GrepCommand(commandSplit, (List<String>)source);
             else if (source instanceof Integer)
@@ -62,6 +76,6 @@ public class CommandManager {
         }
         else {
             throw new IllegalStateException("command is illegal!");
-        }
+        }*/
     }
 }
