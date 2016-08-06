@@ -47,5 +47,12 @@
       <artifactId>logback-classic</artifactId>
       <version>0.9.29</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/junit/junit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+
   </dependencies>
 </project>
